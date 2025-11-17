@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-export default function TopicsChart({ mentions, loading }) {
+export default function TopicsChart({ mentions, loading, onTopicFilter }) {
   if (loading) {
     return (
       <Card className="border border-gray-300 bg-white">

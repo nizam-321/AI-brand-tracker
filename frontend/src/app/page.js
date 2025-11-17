@@ -50,7 +50,7 @@ function Navbar() {
 
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
             <BarChart3 className="w-6 h-6 text-white" />
           </div>
           <span className="text-xl font-bold text-gray-900">BrandTracker</span>
@@ -63,7 +63,7 @@ function Navbar() {
             </Button>
           </Link>
           <Link href="/signup">
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
               Get Started <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
@@ -85,14 +85,14 @@ function HeroSection() {
 
         {/* Tag */}
         <span className="px-4 py-1 rounded-full text-sm font-medium 
-          bg-violet-100 text-violet-700">
+          bg-blue-100 text-blue-700">
           AI-Powered Brand Monitoring
         </span>
 
         {/* Title */}
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-6 text-gray-900">
           Monitor Your Brand Reputation
-          <span className="block bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text text-transparent">
+          <span className="block bg-blue-700 bg-clip-text text-transparent">
             Across The Internet
           </span>
         </h1>
@@ -105,7 +105,7 @@ function HeroSection() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <Link href="/signup">
-            <Button size="lg" className="bg-violet-600 hover:bg-violet-700 text-white px-10">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-10">
               Start Free Trial <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
@@ -144,7 +144,7 @@ function StatsSection() {
         {stats.map((s, i) => (
           <div
             key={i}
-            className="bg-white shadow-sm border rounded-xl p-6 text-center card-hover"
+            className="bg-blue-100 shadow-sm border rounded-xl p-6 text-center card-hover"
           >
             <div className="text-2xl md:text-3xl font-bold text-gray-900">{s.value}</div>
             <div className="text-gray-500 mt-2 text-sm md:text-base">{s.label}</div>
@@ -162,12 +162,12 @@ function StatsSection() {
 
 function FeaturesSection() {
   const features = [
-    { icon: <Eye className="w-8 h-8 text-purple-600" />, title: "Real-time Monitoring", desc: "Track brand mentions across all platforms instantly." },
-    { icon: <TrendingUp className="w-8 h-8 text-purple-600" />, title: "Sentiment Analysis", desc: "AI-powered sentiment detection for accurate insights." },
-    { icon: <Zap className="w-8 h-8 text-purple-600" />, title: "Instant Alerts", desc: "Get alerts when negative mentions spike." },
-    { icon: <BarChart3 className="w-8 h-8 text-purple-600" />, title: "Deep Analytics", desc: "Visual dashboards with trends and charts." },
-    { icon: <Globe className="w-8 h-8 text-purple-600" />, title: "Multi-platform Coverage", desc: "Track mentions across social media, news, blogs." },
-    { icon: <Shield className="w-8 h-8 text-purple-600" />, title: "Enterprise Security", desc: "Secure and encrypted platform for all your data." },
+    { icon: <Eye className="w-8 h-8 text-blue-600" />, title: "Real-time Monitoring", desc: "Track brand mentions across all platforms instantly." },
+    { icon: <TrendingUp className="w-8 h-8 text-blue-600" />, title: "Sentiment Analysis", desc: "AI-powered sentiment detection for accurate insights." },
+    { icon: <Zap className="w-8 h-8 text-blue-600" />, title: "Instant Alerts", desc: "Get alerts when negative mentions spike." },
+    { icon: <BarChart3 className="w-8 h-8 text-blue-600" />, title: "Deep Analytics", desc: "Visual dashboards with trends and charts." },
+    { icon: <Globe className="w-8 h-8 text-blue-600" />, title: "Multi-platform Coverage", desc: "Track mentions across social media, news, blogs." },
+    { icon: <Shield className="w-8 h-8 text-blue-600" />, title: "Enterprise Security", desc: "Secure and encrypted platform for all your data." },
   ];
 
   return (
@@ -188,9 +188,9 @@ function FeaturesSection() {
           {features.map((f, i) => (
             <div
               key={i}
-              className="bg-white border shadow-sm rounded-2xl p-8 card-hover"
+              className="bg-gray-100 border shadow-sm rounded-2xl p-8 card-hover"
             >
-              <div className="w-16 h-16 rounded-xl bg-purple-100 flex items-center justify-center mb-6">
+              <div className="w-16 h-16 rounded-xl bg-blue-100 flex items-center justify-center mb-6">
                 {f.icon}
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">{f.title}</h3>
@@ -224,7 +224,7 @@ function CTASection() {
           </p>
 
           <Link href="/signup">
-            <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-12">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-12">
               Start Free Trial <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
@@ -245,11 +245,11 @@ function CTASection() {
 
 function Footer() {
   return (
-    <footer className="py-10 px-4 border-t bg-white reveal">
+    <footer className="py-10 px-4 border-t reveal">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
 
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <BarChart3 className="w-5 h-5 text-white" />
           </div>
           <span className="text-lg font-bold text-gray-900">BrandTracker</span>

@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -18,6 +19,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 
 import {
   RefreshCw,
@@ -31,6 +39,11 @@ import {
   TrendingUp,
   Clock,
   Filter,
+  Calendar,
+  Twitter,
+  Globe,
+  Newspaper,
+  X,
 } from 'lucide-react';
 
 // Dashboard Components
@@ -51,6 +64,8 @@ export default function DashboardPage() {
   const [brandName, setBrandName] = useState('');
   const [timeRange, setTimeRange] = useState('24h');
   const [filterSentiment, setFilterSentiment] = useState('all');
+  const [filterPlatforms, setFilterPlatforms] = useState([]);
+  const [filterTopics, setFilterTopics] = useState([]);
   const [mentions, setMentions] = useState([]);
   const [stats, setStats] = useState(null);
   const [timeline, setTimeline] = useState([]);
@@ -74,8 +89,15 @@ export default function DashboardPage() {
     setLoading(true);
 
     try {
+      const filters = {
+        timeRange,
+        sentiment: filterSentiment !== 'all' ? filterSentiment : undefined,
+        platforms: filterPlatforms.length > 0 ? filterPlatforms : undefined,
+        topics: filterTopics.length > 0 ? filterTopics : undefined,
+      };
+
       const [mentionsRes, summaryRes, timelineRes] = await Promise.all([
-        mentionsAPI.getByBrand(brandName, { timeRange }),
+        mentionsAPI.getByBrand(brandName, filters),
         analyticsAPI.getSummary({ brand: brandName, timeRange }),
         analyticsAPI.getTimeline({ brand: brandName, timeRange })
       ]);
@@ -103,7 +125,7 @@ export default function DashboardPage() {
     if (brandName) {
       fetchData();
     }
-  }, [brandName, timeRange]);
+  }, [brandName, timeRange, filterSentiment, filterPlatforms, filterTopics]);
 
   // Socket Event Listeners
   useEffect(() => {
@@ -151,7 +173,7 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-40 bg-white border-b shadow-sm">
         <div className="container mx-auto flex justify-between items-center px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-linear-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-blue-600  flex items-center justify-center">
               <BarChart3 className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -224,43 +246,136 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Time Range */}
-            <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger className="w-full lg:w-[200px] px-6 h-12 bg-white border-gray-300 shadow-sm">
-                <Clock className="w-4 h-4 mr-2 text-gray-500" />
-                <SelectValue placeholder="Select time range" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1h">Last Hour</SelectItem>
-                <SelectItem value="24h">Last 24 Hours</SelectItem>
-                <SelectItem value="7d">Last 7 Days</SelectItem>
-                <SelectItem value="30d">Last 30 Days</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* Sentiment Filter */}
-            <Select value={filterSentiment} onValueChange={setFilterSentiment}>
-              <SelectTrigger className="w-full lg:w-[200px] px-6 h-12 bg-white border-gray-300 shadow-sm">
-                <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                <SelectValue placeholder="Filter sentiment" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Sentiments</SelectItem>
-                <SelectItem value="positive">Positive Only</SelectItem>
-                <SelectItem value="negative">Negative Only</SelectItem>
-                <SelectItem value="neutral">Neutral Only</SelectItem>
-              </SelectContent>
-            </Select>
+            {/* Date Range Picker */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full lg:w-[200px] px-6 h-12 bg-white border-gray-300 shadow-sm justify-start">
+                  <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                  {timeRange === '1h' && 'Last Hour'}
+                  {timeRange === '24h' && 'Last 24 Hours'}
+                  {timeRange === '7d' && 'Last 7 Days'}
+                  {timeRange === '30d' && 'Last 30 Days'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                <DropdownMenuItem onClick={() => setTimeRange('1h')}>
+                  <Clock className="w-4 h-4 mr-2" />
+                  Last Hour
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTimeRange('24h')}>
+                  <Clock className="w-4 h-4 mr-2" />
+                  Last 24 Hours
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTimeRange('7d')}>
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Last 7 Days
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTimeRange('30d')}>
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Last 30 Days
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Refresh */}
             <Button
               onClick={fetchData}
               disabled={loading}
-              className="h-9 px-6 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-sm"
+              className="h-9 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
             >
               <RefreshCw className={`w-5 h-5 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
+          </div>
+
+          {/* Advanced Filters */}
+          <div className="flex flex-wrap gap-3 items-center">
+            <span className="text-sm font-medium text-gray-700">Filters:</span>
+
+            {/* Sentiment Toggle Chips */}
+            <div className="flex gap-2">
+              <Badge
+                variant={filterSentiment === 'all' ? 'default' : 'outline'}
+                className={`cursor-pointer transition-all ${
+                  filterSentiment === 'all'
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'hover:bg-gray-100'
+                }`}
+                onClick={() => setFilterSentiment('all')}
+              >
+                All Sentiments
+              </Badge>
+              <Badge
+                variant={filterSentiment === 'positive' ? 'default' : 'outline'}
+                className={`cursor-pointer transition-all ${
+                  filterSentiment === 'positive'
+                    ? 'bg-green-600 text-white hover:bg-green-700'
+                    : 'hover:bg-green-50'
+                }`}
+                onClick={() => setFilterSentiment('positive')}
+              >
+                Positive
+              </Badge>
+              <Badge
+                variant={filterSentiment === 'negative' ? 'default' : 'outline'}
+                className={`cursor-pointer transition-all ${
+                  filterSentiment === 'negative'
+                    ? 'bg-red-600 text-white hover:bg-red-700'
+                    : 'hover:bg-red-50'
+                }`}
+                onClick={() => setFilterSentiment('negative')}
+              >
+                Negative
+              </Badge>
+              <Badge
+                variant={filterSentiment === 'neutral' ? 'default' : 'outline'}
+                className={`cursor-pointer transition-all ${
+                  filterSentiment === 'neutral'
+                    ? 'bg-gray-600 text-white hover:bg-gray-700'
+                    : 'hover:bg-gray-50'
+                }`}
+                onClick={() => setFilterSentiment('neutral')}
+              >
+                Neutral
+              </Badge>
+            </div>
+
+            {/* Platform Filter Chips */}
+            <div className="flex gap-2">
+              {['Twitter', 'Reddit', 'News'].map(platform => {
+                const isSelected = filterPlatforms.includes(platform);
+                const getIcon = (p) => {
+                  switch(p) {
+                    case 'Twitter': return <Twitter className="w-3 h-3 mr-1" />;
+                    case 'Reddit': return <Globe className="w-3 h-3 mr-1" />;
+                    case 'News': return <Newspaper className="w-3 h-3 mr-1" />;
+                    default: return null;
+                  }
+                };
+                return (
+                  <Badge
+                    key={platform}
+                    variant={isSelected ? 'default' : 'outline'}
+                    className={`cursor-pointer transition-all flex items-center ${
+                      isSelected
+                        ? 'bg-purple-600 text-white hover:bg-purple-700'
+                        : 'hover:bg-purple-50'
+                    }`}
+                    onClick={() => {
+                      setFilterPlatforms(prev =>
+                        isSelected
+                          ? prev.filter(p => p !== platform)
+                          : [...prev, platform]
+                      );
+                    }}
+                  >
+                    {getIcon(platform)}
+                    {platform}
+                    {isSelected && <X className="w-3 h-3 ml-1" />}
+                  </Badge>
+                );
+              })}
+            </div>
           </div>
 
           {/* Quick Brand Switcher */}
@@ -276,8 +391,8 @@ export default function DashboardPage() {
                   }}
                   className={`px-4 py-1 rounded-lg font-sm transition-all ${
                     brandName === brand
-                      ? 'bg-linear-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                      : 'bg-white border border-gray-300 text-gray-700 hover:border-indigo-500 hover:text-indigo-600'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : 'bg-white border border-gray-300 text-gray-700 hover:border-blue-500 hover:text-blue-600'
                   }`}
                 >
                   {brand}
@@ -294,17 +409,17 @@ export default function DashboardPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
 
           <TabsList className="bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-linear-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-600 data-[state=active]:text-white">
               <Activity className="w-4 h-4 mr-2" />
               Overview
             </TabsTrigger>
 
-            <TabsTrigger value="mentions" className="data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="mentions" className="data-[state=active]:bg-linear-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-600 data-[state=active]:text-white">
               <MessageSquare className="w-4 h-4 mr-2" />
               Mentions
             </TabsTrigger>
 
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-linear-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-linear-to-r data-[state=active]:from-blue-600 data-[state=active]:to-blue-600 data-[state=active]:text-white">
               <TrendingUp className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
@@ -321,7 +436,11 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <TimelineChart data={timeline} loading={loading} />
                 <SentimentChart stats={stats} loading={loading} />
-                <TopicsChart mentions={mentions} loading={loading} />
+                <TopicsChart
+                  mentions={mentions}
+                  loading={loading}
+                  onTopicFilter={(topic) => setFilterTopics([topic])}
+                />
                 <SourcesChart mentions={mentions} loading={loading} />
               </div>
             </div>
@@ -335,6 +454,8 @@ export default function DashboardPage() {
               <MentionsFeed
                 mentions={mentions}
                 filterSentiment={filterSentiment}
+                filterPlatforms={filterPlatforms}
+                filterTopics={filterTopics}
                 loading={loading}
               />
             </div>
@@ -342,7 +463,13 @@ export default function DashboardPage() {
 
           {/* MENTIONS */}
           <TabsContent value="mentions" className="mt-6">
-            <MentionsFeed mentions={mentions} filterSentiment={filterSentiment} loading={loading} />
+            <MentionsFeed
+              mentions={mentions}
+              filterSentiment={filterSentiment}
+              filterPlatforms={filterPlatforms}
+              filterTopics={filterTopics}
+              loading={loading}
+            />
           </TabsContent>
 
           {/* ANALYTICS */}

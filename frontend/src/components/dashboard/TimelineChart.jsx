@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Brush } from 'recharts';
 
 export default function TimelineChart({ data, loading }) {
   if (loading) {
@@ -57,6 +57,14 @@ export default function TimelineChart({ data, loading }) {
             />
 
             <Legend wrapperStyle={{ color: '#000' }} />
+
+            {/* Zoom/Pan Brush */}
+            <Brush
+              dataKey="time"
+              height={30}
+              stroke="#4f46e5"
+              fill="#f3f4f6"
+            />
 
             {/* Lines */}
             <Line

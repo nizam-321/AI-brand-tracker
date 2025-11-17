@@ -14,14 +14,19 @@ import {
 import { getSentimentColor, getSourceIcon, formatDate } from '@/lib/utils';
 import { ThumbsUp, MessageCircle, Eye, ExternalLink, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function MentionsFeed({ mentions, filterSentiment, loading }) {
+export default function MentionsFeed({ mentions, filterSentiment, filterPlatforms, filterTopics, loading }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // 10 mentions per page
 
-  // Filter mentions based on sentiment
+  // Filter mentions based on sentiment, platforms, and topics
   const filteredMentions = useMemo(() => {
-    return mentions.filter(m => filterSentiment === 'all' || m.sentiment === filterSentiment);
-  }, [mentions, filterSentiment]);
+    return mentions.filter(m => {
+      const sentimentMatch = filterSentiment === 'all' || m.sentiment === filterSentiment;
+      const platformMatch = filterPlatforms.length === 0 || filterPlatforms.includes(m.source);
+      const topicMatch = filterTopics.length === 0 || filterTopics.includes(m.topic);
+      return sentimentMatch && platformMatch && topicMatch;
+    });
+  }, [mentions, filterSentiment, filterPlatforms, filterTopics]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredMentions.length / itemsPerPage);
@@ -32,7 +37,7 @@ export default function MentionsFeed({ mentions, filterSentiment, loading }) {
   // Reset to page 1 when filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [filterSentiment]);
+  }, [filterSentiment, filterPlatforms, filterTopics]);
 
   // Loading state
   if (loading) {

@@ -141,7 +141,7 @@ export default function SignupPage() {
                 type="submit"
                 variant="cta" size="lg"
                 disabled={loading}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 flex justify-center items-center"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 flex justify-center items-center"
               >
                 {loading ? (
                   <>
