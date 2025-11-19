@@ -108,7 +108,7 @@ export default function MentionsFeed({ mentions, filterSentiment, filterPlatform
           {currentMentions.map((mention, index) => (
             <div
               key={mention._id}
-              className="p-5 bg-gradient-to-br from-white via-gray-50/30 to-gray-100/20 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200"
+              className="p-5 bg-linear-to-br from-white via-gray-50/30 to-gray-100/20 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200"
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-3 flex-wrap gap-2">

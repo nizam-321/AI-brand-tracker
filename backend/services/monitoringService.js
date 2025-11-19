@@ -4,6 +4,11 @@ const natural = require('natural');
 const Mention = require('../models/Mention');
 const Alert = require('../models/Alert');
 
+// Real API Services
+const { fetchTwitterMentions } = require('./twitterService');
+const { fetchRedditMentions } = require('./redditService');
+const { fetchNewsMentions } = require('./newsService');
+
 // Initialize sentiment analyzer
 const Analyzer = natural.SentimentAnalyzer;
 const stemmer = natural.PorterStemmer;
@@ -61,65 +66,7 @@ function extractKeywords(text) {
     .slice(0, 10);
 }
 
-// Scrape Twitter-like data (Mock implementation)
-async function scrapeTwitter(brand) {
-  // In production, use Twitter API
-  // This is a mock implementation
-  const mockTweets = [
-    {
-      text: `Just bought a new ${brand} and absolutely loving it! Best purchase ever!`,
-      author: 'user123',
-      authorHandle: '@user123',
-      timestamp: new Date(),
-      likes: Math.floor(Math.random() * 1000),
-      shares: Math.floor(Math.random() * 100),
-      comments: Math.floor(Math.random() * 50),
-      reach: Math.floor(Math.random() * 10000)
-    },
-    {
-      text: `${brand} customer service is terrible. Been waiting for 2 hours!`,
-      author: 'angry_customer',
-      authorHandle: '@angry_customer',
-      timestamp: new Date(),
-      likes: Math.floor(Math.random() * 500),
-      shares: Math.floor(Math.random() * 50),
-      comments: Math.floor(Math.random() * 30),
-      reach: Math.floor(Math.random() * 5000)
-    }
-  ];
-  
-  return mockTweets;
-}
 
-// Scrape Reddit data (Mock implementation)
-async function scrapeReddit(brand) {
-  const mockPosts = [
-    {
-      text: `${brand} just released an amazing new feature. This is game-changing!`,
-      author: 'reddit_user_456',
-      timestamp: new Date(),
-      likes: Math.floor(Math.random() * 2000),
-      comments: Math.floor(Math.random() * 100),
-      reach: Math.floor(Math.random() * 20000)
-    }
-  ];
-  
-  return mockPosts;
-}
-
-// Scrape news articles (Mock implementation)
-async function scrapeNews(brand) {
-  const mockArticles = [
-    {
-      text: `${brand} announces new strategic partnership to expand market presence`,
-      author: 'Tech News Daily',
-      timestamp: new Date(),
-      reach: Math.floor(Math.random() * 50000)
-    }
-  ];
-  
-  return mockArticles;
-}
 
 // Check for spikes in mentions
 async function detectSpikes(brand) {
@@ -143,13 +90,13 @@ async function detectSpikes(brand) {
 // Main monitoring function
 async function monitorBrand(brand, io) {
   try {
-    console.log(`Monitoring brand: ${brand}`);
+    console.log(`🔍 Monitoring brand: ${brand}`);
     
-    // Scrape from multiple sources
+    // Fetch from real APIs in parallel
     const [twitterData, redditData, newsData] = await Promise.all([
-      scrapeTwitter(brand),
-      scrapeReddit(brand),
-      scrapeNews(brand)
+      fetchTwitterMentions(brand),
+      fetchRedditMentions(brand),
+      fetchNewsMentions(brand)
     ]);
     
     // Process all mentions
@@ -186,7 +133,7 @@ async function monitorBrand(brand, io) {
           topic,
           author: mentionData.author,
           authorHandle: mentionData.authorHandle,
-          url: `https://example.com/${brand}/${Date.now()}`,
+          url: mentionData.url || `https://example.com/${brand}/${Date.now()}`,
           timestamp: mentionData.timestamp,
           engagement: {
             likes: mentionData.likes || 0,
