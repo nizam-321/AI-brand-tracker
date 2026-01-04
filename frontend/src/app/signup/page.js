@@ -1,3 +1,4 @@
+//path: frontend/src/app/login/page.js
 'use client';
 
 import { useState } from 'react';
@@ -34,12 +35,15 @@ export default function SignupPage() {
     setError('');
     setLoading(true);
 
+    const startTime = Date.now();
     try {
       const brands = formData.brands.split(',').map(b => b.trim()).filter(b => b);
       await signup({ ...formData, brands });
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 500 - elapsed);
+      setTimeout(() => setLoading(false), remaining);
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed. Please try again.');
-    } finally {
       setLoading(false);
     }
   };

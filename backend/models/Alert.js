@@ -1,4 +1,4 @@
-// models/Alert.js
+//path: backend/models/Alert.js
 const mongoose = require('mongoose');
 
 const alertSchema = new mongoose.Schema({

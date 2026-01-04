@@ -1,4 +1,4 @@
-// routes/analytics.js
+//path: backend/routes/analytics.js
 const express = require('express');
 const Mention = require('../models/Mention');
 const { authenticateToken } = require('./auth');

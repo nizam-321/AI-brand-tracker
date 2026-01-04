@@ -1,4 +1,4 @@
-// routes/mentions.js
+//path: backend/routes/mentions.js
 const express = require('express');
 const Mention = require('../models/Mention');
 const { authenticateToken } = require('./auth');

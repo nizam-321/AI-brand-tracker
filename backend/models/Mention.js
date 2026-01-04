@@ -1,4 +1,4 @@
-// models/Mention.js
+//path: backend/models/Mention.js
 const mongoose = require('mongoose');
 
 const mentionSchema = new mongoose.Schema({

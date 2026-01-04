@@ -1,4 +1,4 @@
-// routes/auth.js
+//path: backend/routes/auth.js
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');

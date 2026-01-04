@@ -1,4 +1,4 @@
-// services/monitoringService.js
+//path: backend/services/monitoringService.js
 const axios = require('axios');
 const natural = require('natural');
 const Mention = require('../models/Mention');

@@ -1,3 +1,4 @@
+//path: frontend/src/App.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';

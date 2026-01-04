@@ -1,3 +1,4 @@
+//path: frontend/src/components/dashboard/TopicsChart.jsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 

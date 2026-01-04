@@ -1,3 +1,4 @@
+//path: backend/server.js
 // server.js - Main entry point
 require('dotenv').config();
 const express = require('express');
@@ -64,8 +65,8 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start monitoring service (runs every 5 minutes)
-cron.schedule('*/5 * * * *', () => {
+// Start monitoring service (runs every 10 minutes)
+cron.schedule('*/10 * * * *', () => {
   console.log('⏰ Running scheduled monitoring...');
   startMonitoring(io);
 });

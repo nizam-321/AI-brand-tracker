@@ -1,4 +1,4 @@
-// services/redditService.js
+//path: backend/services/redditService.js
 // Free Reddit API Integration (No authentication needed!)
 
 const axios = require('axios');

@@ -1,4 +1,4 @@
-// services/twitterService.js
+//path: backend/services/twitterService.js
 // Real Twitter API v2 Integration
 
 const axios = require('axios');

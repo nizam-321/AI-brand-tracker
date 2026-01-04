@@ -1,4 +1,4 @@
-// services/newsService.js
+//path: backend/services/newsService.js
 // News API Integration (Free tier: 100 requests/day)
 
 const axios = require('axios');

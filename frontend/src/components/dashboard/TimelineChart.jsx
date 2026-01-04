@@ -1,3 +1,4 @@
+//path: frontend/src/components/dashboard/TimelineChart.jsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Brush } from 'recharts';
 

@@ -1,3 +1,4 @@
+//path: frontend/src/app/dashboard/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -213,7 +214,7 @@ export default function DashboardPage() {
             <Button
               onClick={() => {
                 logout();
-                toast.success('Logged out successfully');
+                setTimeout(() => toast.success('Logged out successfully'), 100);
               }}
               variant="outline"
               className="flex items-center gap-1 border-gray-300 text-gray-700 hover:text-red-600"

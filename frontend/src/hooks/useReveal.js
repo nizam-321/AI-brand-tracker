@@ -1,3 +1,4 @@
+//path: frontend/src/hooks/useReveal.js
 import { useEffect } from "react";
 
 export default function useReveal() {

@@ -1,3 +1,4 @@
+//path: frontend/src/components/dashboard/SentimentChart.jsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 

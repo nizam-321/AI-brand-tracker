@@ -1,3 +1,4 @@
+//path: frontend/src/app/login/page.js
 'use client';
 
 import { useState } from 'react';
@@ -22,11 +23,14 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
+    const startTime = Date.now();
     try {
       await login(email, password);
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 500 - elapsed);
+      setTimeout(() => setLoading(false), remaining);
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
-    } finally {
       setLoading(false);
     }
   };
